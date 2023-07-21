@@ -68,6 +68,7 @@ export class MultiplayerPage implements OnInit {
     } else {
       if (this.currentRecipientId === playerId) {
       } else {
+        this.messages = [];
         this.currentRecipientId = playerId;
         this.conversationId = this.generateConversationId(playerId); // Gerar um ID único para a conversa
         console.log(this.conversationId);

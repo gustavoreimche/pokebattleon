@@ -18,15 +18,13 @@
       </ion-label>
     </ion-item>
   </ion-list>
+  <div *ngFor="let message of messages">
+    <span> {{ message.senderId }} </span>
+    <p>{{ message.content }}</p>
+  </div>
+
+  <div *ngIf="currentRecipientId">
+    <input [(ngModel)]="newMessage" placeholder="Digite sua mensagem">
+    <button (click)="sendMessage()">Enviar</button>
+  </div>
 </ion-content>
-
-
-<div *ngFor="let message of messages">
-  <span> {{ message.senderId }} </span>
-  <p>{{ message.content }}</p>
-</div>
-
-<div *ngIf="currentRecipientId">
-  <input [(ngModel)]="newMessage" placeholder="Digite sua mensagem">
-  <button (click)="sendMessage()">Enviar</button>
-</div>
