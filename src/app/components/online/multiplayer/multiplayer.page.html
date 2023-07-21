@@ -11,10 +11,21 @@
     <ion-item *ngFor="let user of onlineUsers">
       <ion-icon slot="start" name="person-circle-outline"></ion-icon>
       <ion-label>
-        <h2>{{ user.displayName }}</h2>
+        <h3>{{ user.uid }}</h3>
+        <h2 (click)="startChatWithPlayer(user.uid)">{{ user.displayName }}</h2>
         <div class="status-dot" [ngClass]="{'online': user.online}"></div>
         <!-- <p>{{ user.email }}</p> -->
       </ion-label>
     </ion-item>
   </ion-list>
 </ion-content>
+
+
+<div *ngFor="let message of messages">
+  <p>{{ message.content }}</p>
+</div>
+
+<div *ngIf="currentRecipientId">
+  <input [(ngModel)]="newMessage" placeholder="Digite sua mensagem">
+  <button (click)="sendMessage()">Enviar</button>
+</div>

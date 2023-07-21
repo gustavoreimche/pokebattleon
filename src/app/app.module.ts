@@ -11,22 +11,21 @@ import { environment } from '../environments/environment';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
-import { AuthService } from './services/auth.service'
+import { AuthService } from './services/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthGuard } from './services/auth.guard';
 
-
 @NgModule({
-  declarations: [AppComponent, ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     FormsModule,
     FontAwesomeModule,
-    IonicModule.forRoot(), 
+    IonicModule.forRoot(),
     AppRoutingModule,
-    
+
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
@@ -35,7 +34,7 @@ import { AuthGuard } from './services/auth.guard';
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     AuthService,
-    AuthGuard //  Adicione o AuthGuard aos providers  
+    AuthGuard, //  Adicione o AuthGuard aos providers
   ],
   bootstrap: [AppComponent],
 })

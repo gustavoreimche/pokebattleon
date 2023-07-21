@@ -86,7 +86,11 @@ const routes: Routes = [
   {
     path: 'battle-room',
     loadChildren: () => import('./components/online/battle-room/battle-room.module').then( m => m.BattleRoomPageModule)
+  },  {
+    path: 'chat',
+    loadChildren: () => import('./components/chat/chat.module').then( m => m.ChatPageModule)
   },
+
 
   
 ];
