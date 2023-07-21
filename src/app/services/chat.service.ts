@@ -74,4 +74,21 @@ export class MessageService {
       });
     });
   }
+
+  getMessagesSended(userId: string): Observable<any> {
+    const q = query(
+      collection(this.firestore, 'messages'),
+      where('senderId', '==', userId)
+    );
+
+    return new Observable((observer) => {
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          if (change.type === 'added') {
+            observer.next(change.doc.data());
+          }
+        });
+      });
+    });
+  }
 }

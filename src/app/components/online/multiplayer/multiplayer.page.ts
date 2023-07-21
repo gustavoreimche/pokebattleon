@@ -4,6 +4,8 @@ import { User } from '../../../models/user.model';
 import { MessageService } from 'src/app/services/chat.service';
 import { Message } from 'src/app/models/message.model';
 import { Subscription } from 'rxjs';
+const md5 = require('md5');
+
 import {
   collection,
   getFirestore,
@@ -48,25 +50,34 @@ export class MultiplayerPage implements OnInit {
         console.log(data);
         this.messages.push(data);
       });
-
-    this.messageService.geMessagesReceived(this.userId).subscribe((data) => {
-      console.log(data);
-    });
   }
 
   ngOnChanges(): void {
-    if (this.conversationId) {
-      this.messageService.getMessageByConversationId(this.conversationId);
-    }
+    this.messageService.geMessagesReceived(this.userId).subscribe((data) => {
+      console.log('Recebido: ', data);
+    });
+
+    this.messageService.getMessagesSended(this.userId).subscribe((data) => {
+      console.log('Enviado: ', data);
+    });
   }
 
   startChatWithPlayer(playerId: string) {
     if (this.userId === playerId) {
       console.log('Não pode inciar uma conversa com você mesmo');
     } else {
-      this.currentRecipientId = playerId;
-      this.conversationId = this.generateConversationId(playerId); // Gerar um ID único para a conversa
-      console.log(this.conversationId);
+      if (this.currentRecipientId === playerId) {
+      } else {
+        this.currentRecipientId = playerId;
+        this.conversationId = this.generateConversationId(playerId); // Gerar um ID único para a conversa
+        console.log(this.conversationId);
+        this.messageService
+          .getNewMessages(this.conversationId)
+          .subscribe((data) => {
+            console.log(data);
+            this.messages.push(data);
+          });
+      }
     }
   }
 
@@ -89,10 +100,10 @@ export class MultiplayerPage implements OnInit {
   }
 
   private generateConversationId(playerId: string): string {
-    // Implemente uma lógica para gerar um ID único para a conversa.
-    // Isso pode ser um hash, uma combinação dos UIDs dos jogadores envolvidos,
-    // ou qualquer outra abordagem que garanta a unicidade para cada conversa.
-    // Neste exemplo, estamos simplesmente concatenando os UIDs dos jogadores.
-    return 'CONVERSATION_' + this.userId + '_' + playerId;
+    const concatenatedIds =
+      this.userId < playerId ? this.userId + playerId : playerId + this.userId;
+    return md5(concatenatedIds);
   }
+
+  sender: string = '';
 }
